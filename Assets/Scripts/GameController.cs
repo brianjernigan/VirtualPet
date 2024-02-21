@@ -14,14 +14,29 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject _hungerBar;
     [SerializeField] private GameObject _boredomBar;
     [SerializeField] private GameObject _fatigueBar;
-    
 
+    private const int HungerPerSecond = 10;
+    private const int BoredomPerSecond = 10;
+    private const int FatiguePerSecond = 10;
+    private const int MaxStatusValue = 100;
+    
     private Pet _newPet;
+
+    private bool _petAdopted;
 
     private void Start()
     {
         UpdateButtonState();
         _nameInputField.onValueChanged.AddListener(delegate {UpdateButtonState();} );
+    }
+
+    private void Update()
+    {
+        if (_petAdopted)
+        {
+            IncrementPetStatus();
+            Debug.Log(_newPet.Hunger);
+        }
     }
     
     private void UpdateButtonState()
@@ -33,10 +48,10 @@ public class GameController : MonoBehaviour
     {
         var petName = _nameInputField.text;
         _newPet = new Pet(petName);
+        _petAdopted = true;
         _nameInputField.interactable = false;
         _namingText.SetActive(false);
         Debug.Log(_newPet.ToString());
-        InitializeBars();
     }
 
     private void UpdateBars()
@@ -45,29 +60,39 @@ public class GameController : MonoBehaviour
         _boredomBar.GetComponent<Slider>().value = _newPet.Boredom;
         _fatigueBar.GetComponent<Slider>().value = _newPet.Fatigue;
     }
-    
-    private void InitializeBars()
+
+    private void IncrementPetStatus()
     {
-        _hungerBar.GetComponent<Slider>().value = 100;
-        _boredomBar.GetComponent<Slider>().value = 100;
-        _fatigueBar.GetComponent<Slider>().value = 100;
+        if (_newPet.Hunger + (HungerPerSecond * Time.deltaTime) <= MaxStatusValue)
+        {
+            _newPet.Hunger += HungerPerSecond * Time.deltaTime;
+        }
+
+        if (_newPet.Boredom + (BoredomPerSecond * Time.deltaTime) <= MaxStatusValue)
+        {
+            _newPet.Boredom += BoredomPerSecond * Time.deltaTime;
+        }
+
+        if (_newPet.Fatigue + (FatiguePerSecond * Time.deltaTime) <= MaxStatusValue)
+        {
+            _newPet.Fatigue += FatiguePerSecond * Time.deltaTime;
+        }
+        
+        UpdateBars();
     }
 
     public void OnClickFeedButton()
     {
         _newPet.Feed(10);
-        UpdateBars();
     }
 
     public void OnClickPlayButton()
     {
         _newPet.Play(10);
-        UpdateBars();
     }
 
     public void OnClickRestButton()
     {
         _newPet.Rest(10);
-        UpdateBars();
     }
 }

@@ -6,9 +6,9 @@ using UnityEngine;
 public class Pet
 {
     private string _name;
-    private int _hunger;
-    private int _boredom;
-    private int _fatigue;
+    private float _hunger;
+    private float _boredom;
+    private float _fatigue;
 
     public string Name
     {
@@ -16,19 +16,19 @@ public class Pet
         set => _name = value;
     }
 
-    public int Hunger
+    public float Hunger
     {
         get => _hunger;
         set => _hunger = value;
     }
 
-    public int Boredom
+    public float Boredom
     {
         get => _boredom;
         set => _boredom = value;
     }
 
-    public int Fatigue
+    public float Fatigue
     {
         get => _fatigue;
         set => _fatigue = value;
@@ -36,7 +36,10 @@ public class Pet
 
     public void Feed(int cals)
     {
-        _hunger -= cals;
+        if (_hunger - cals >= 0)
+        {
+            _hunger -= cals;
+        }
     }
 
     public void Play(int exercise)
