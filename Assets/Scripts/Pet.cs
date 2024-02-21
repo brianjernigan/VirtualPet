@@ -34,7 +34,7 @@ public class Pet
         set => _fatigue = value;
     }
 
-    public void Eat(int cals)
+    public void Feed(int cals)
     {
         _hunger -= cals;
     }
