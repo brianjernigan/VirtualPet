@@ -48,4 +48,17 @@ public class Pet
     {
         _fatigue -= sleep;
     }
+
+    public Pet(string name)
+    {
+        _name = name;
+        _hunger = 0;
+        _boredom = 0;
+        _fatigue = 0;
+    }
+
+    public override string ToString()
+    {
+        return $"Name: {_name}, Hunger: {_hunger}, Boredom: {_boredom}, Fatigue: {_fatigue}";
+    }
 }
