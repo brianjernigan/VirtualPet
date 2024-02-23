@@ -31,6 +31,11 @@ public class GameController : MonoBehaviour
     [SerializeField] private Image _boredomBarFill;
     [SerializeField] private Image _fatigueBarFill;
 
+    [Header("Buttons")] 
+    [SerializeField] private Button _feedButton;
+    [SerializeField] private Button _playButton;
+    [SerializeField] private Button _restButton;
+
     private const float HungerPerSecond = 5f;
     private const float BoredomPerSecond = 6.25f;
     private const float FatiguePerSecond = 3.75f;
@@ -41,7 +46,6 @@ public class GameController : MonoBehaviour
 
     private Pet _newPet;
     private bool _isAdopted;
-    private bool _isBeingTaken;
 
     private void SetMaxBarValues()
     {
@@ -54,7 +58,7 @@ public class GameController : MonoBehaviour
     {
         _adoptButton.interactable = !string.IsNullOrEmpty(_nameInputField.text);
     }
-    
+
     private void Start()
     {
         SetMaxBarValues();
@@ -66,6 +70,19 @@ public class GameController : MonoBehaviour
     {
         if (!_isAdopted) return;
         
+        UpdatePetNeeds();
+        UpdateActionButtons();
+        UpdateStatusBars();
+        
+        
+        if (CheckForLoss())
+        {
+            Debug.Log("you lose");
+        }
+    }
+
+    private void UpdatePetNeeds()
+    {
         if (!_newPet.IsFed)
         {
             _newPet.IncreaseHunger(HungerPerSecond, MaxHungerValue);
@@ -80,34 +97,19 @@ public class GameController : MonoBehaviour
         {
             _newPet.IncreaseFatigue(FatiguePerSecond, MaxFatigueValue);
         }
-
-        _isBeingTaken = Math.Abs(_newPet.Hunger - MaxHungerValue) < 0.01f &&
-                        Math.Abs(_newPet.Boredom - MaxBoredomValue) < 0.01f &&
-                        Math.Abs(_newPet.Fatigue - MaxFatigueValue) < 0.01f;
-
-        if (_isBeingTaken)
-        {
-            Debug.Log("you lose");
-        }
-
-        UpdateStatusBars();
     }
-    
-    public void OnClickAdoptButton()
+
+    private void UpdateActionButtons()
     {
-        var petName = _nameInputField.text;
-        _newPet = new Pet(petName);
-        OnAdoption();
+        _feedButton.interactable = !StatusHasReachedMax(_newPet.Hunger, MaxHungerValue);
+        _playButton.interactable = !StatusHasReachedMax(_newPet.Boredom, MaxBoredomValue);
+        _restButton.interactable = !StatusHasReachedMax(_newPet.Fatigue, MaxFatigueValue);
     }
 
-    private void OnAdoption()
+    private bool StatusHasReachedMax(float currentValue, float maxValue)
     {
-        _isAdopted = true;
-        _nameInputField.interactable = false;
-        _adoptButton.interactable = false;
-        _namePetText.SetActive(false);
+        return Math.Abs(currentValue - maxValue) < 0.01f;
     }
-    
     private void UpdateStatusBars()
     {
         _hungerBarSlider.value = _newPet.Hunger;
@@ -133,6 +135,29 @@ public class GameController : MonoBehaviour
             _ => Color.red
         };
     }
+    private bool CheckForLoss()
+    {
+        return Math.Abs(_newPet.Hunger - MaxHungerValue) < 0.01f &&
+                   Math.Abs(_newPet.Boredom - MaxBoredomValue) < 0.01f &&
+                   Math.Abs(_newPet.Fatigue - MaxFatigueValue) < 0.01f;
+    }
+    
+    public void OnClickAdoptButton()
+    {
+        var petName = _nameInputField.text;
+        _newPet = new Pet(petName);
+        OnAdoption();
+    }
+
+    private void OnAdoption()
+    {
+        _isAdopted = true;
+        _nameInputField.interactable = false;
+        _adoptButton.interactable = false;
+        _namePetText.SetActive(false);
+    }
+    
+
 
     public void OnClickFeedButton()
     {

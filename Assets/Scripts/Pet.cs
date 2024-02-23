@@ -6,6 +6,7 @@
 //Date: 02/26/2024
 /////////////////////////////////////////////
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,7 @@ public class Pet
     private float _hunger;
     private float _boredom;
     private float _fatigue;
-
+    
     public string Name
     {
         get => _name;
@@ -41,23 +42,9 @@ public class Pet
         set => _fatigue = value;
     }
 
-    public bool IsFed
-    {
-        get;
-        set;
-    }
-
-    public bool HasPlayed
-    {
-        get;
-        set;
-    }
-
-    public bool IsRested
-    {
-        get;
-        set;
-    }
+    public bool IsFed { get; set; }
+    public bool HasPlayed { get; set; }
+    public bool IsRested { get; set; }
 
     public void Feed(int cals)
     {
@@ -142,6 +129,7 @@ public class Pet
         _fatigue = 0;
     }
 
+    // For debugging
     public override string ToString()
     {
         return $"Name: {_name}, Hunger: {_hunger}, Boredom: {_boredom}, Fatigue: {_fatigue}";

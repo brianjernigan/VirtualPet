@@ -2681,6 +2681,9 @@ MonoBehaviour:
   _hungerBarFill: {fileID: 481051909}
   _boredomBarFill: {fileID: 1750936436}
   _fatigueBarFill: {fileID: 1490908415}
+  _feedButton: {fileID: 140259225}
+  _playButton: {fileID: 1466902863}
+  _restButton: {fileID: 364849173}
 --- !u!4 &1738028937
 Transform:
   m_ObjectHideFlags: 0
