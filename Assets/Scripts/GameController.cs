@@ -11,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -19,6 +20,7 @@ public class GameController : MonoBehaviour
     [Header("On-Screen Elements")]
     [SerializeField] private TMP_InputField _nameInputField;
     [SerializeField] private Button _adoptButton;
+    [SerializeField] private Button _playAgainButton;
     [SerializeField] private GameObject _namePetText;
 
     [Header("Sliders")] 
@@ -77,6 +79,8 @@ public class GameController : MonoBehaviour
         
         if (CheckForLoss())
         {
+            _adoptButton.gameObject.SetActive(false);
+            _playAgainButton.gameObject.SetActive(true);
             Debug.Log("you lose");
         }
     }
@@ -149,6 +153,11 @@ public class GameController : MonoBehaviour
         OnAdoption();
     }
 
+    public void OnClickPlayAgainButton()
+    {
+        SceneManager.LoadScene("VirtualPet");
+    }
+
     private void OnAdoption()
     {
         _isAdopted = true;
@@ -157,8 +166,6 @@ public class GameController : MonoBehaviour
         _namePetText.SetActive(false);
     }
     
-
-
     public void OnClickFeedButton()
     {
         _newPet.Feed(25);
