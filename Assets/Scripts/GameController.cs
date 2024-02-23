@@ -18,25 +18,34 @@ public class GameController : MonoBehaviour
     private const int HungerPerSecond = 10;
     private const int BoredomPerSecond = 10;
     private const int FatiguePerSecond = 10;
-    private const int MaxStatusValue = 100;
     
+    private float MaxHungerValue { get; set; }
+    private float MaxBoredomValue { get; set; }
+    private float MaxFatigueValue { get; set; }
+
     private Pet _newPet;
 
-    private bool _petAdopted;
+    private bool _isAdopted;
 
     private void Start()
     {
+        SetMaxBarValues();
         UpdateButtonState();
         _nameInputField.onValueChanged.AddListener(delegate {UpdateButtonState();} );
     }
 
     private void Update()
     {
-        if (_petAdopted)
-        {
-            IncrementPetStatus();
-            Debug.Log(_newPet.Hunger);
-        }
+        if (!_isAdopted) return;
+        IncrementPetStatus();
+        Debug.Log(_newPet);
+    }
+
+    private void SetMaxBarValues()
+    {
+        MaxHungerValue = _hungerBar.GetComponent<Slider>().maxValue;
+        MaxBoredomValue = _boredomBar.GetComponent<Slider>().maxValue;
+        MaxFatigueValue = _fatigueBar.GetComponent<Slider>().maxValue;
     }
     
     private void UpdateButtonState()
@@ -48,7 +57,7 @@ public class GameController : MonoBehaviour
     {
         var petName = _nameInputField.text;
         _newPet = new Pet(petName);
-        _petAdopted = true;
+        _isAdopted = true;
         _nameInputField.interactable = false;
         _namingText.SetActive(false);
         Debug.Log(_newPet.ToString());
@@ -63,21 +72,10 @@ public class GameController : MonoBehaviour
 
     private void IncrementPetStatus()
     {
-        if (_newPet.Hunger + (HungerPerSecond * Time.deltaTime) <= MaxStatusValue)
-        {
-            _newPet.Hunger += HungerPerSecond * Time.deltaTime;
-        }
+        _newPet.GainHunger(HungerPerSecond, MaxHungerValue);
+        _newPet.GainBoredom(BoredomPerSecond, MaxBoredomValue);
+        _newPet.GainFatigue(FatiguePerSecond, MaxFatigueValue);
 
-        if (_newPet.Boredom + (BoredomPerSecond * Time.deltaTime) <= MaxStatusValue)
-        {
-            _newPet.Boredom += BoredomPerSecond * Time.deltaTime;
-        }
-
-        if (_newPet.Fatigue + (FatiguePerSecond * Time.deltaTime) <= MaxStatusValue)
-        {
-            _newPet.Fatigue += FatiguePerSecond * Time.deltaTime;
-        }
-        
         UpdateBars();
     }
 

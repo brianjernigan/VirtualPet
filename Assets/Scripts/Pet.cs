@@ -40,18 +40,72 @@ public class Pet
         {
             _hunger -= cals;
         }
+        else
+        {
+            _hunger = 0;
+        }
+    }
+    
+    public void GainHunger(int perSecondValue, float maxValue)
+    {
+        if (_hunger + (perSecondValue * Time.deltaTime) <= maxValue)
+        {
+            _hunger += perSecondValue * Time.deltaTime;
+        }
+        else
+        {
+            _hunger = maxValue;
+        }
     }
 
     public void Play(int exercise)
     {
-        _boredom -= exercise;
+        if (_boredom - exercise >= 0)
+        {
+            _boredom -= exercise;
+        }
+        else
+        {
+            _boredom = 0;
+        }
+    }
+    
+    public void GainBoredom(int perSecondValue, float maxValue)
+    {
+        if (_boredom + (perSecondValue * Time.deltaTime) <= maxValue)
+        {
+            _boredom += perSecondValue * Time.deltaTime;
+        }
+        else
+        {
+            _boredom = maxValue;
+        }
     }
 
     public void Rest(int sleep)
     {
-        _fatigue -= sleep;
+        if (_fatigue - sleep >= 0)
+        {
+            _fatigue -= sleep;    
+        }
+        else
+        {
+            _fatigue = 0;
+        }
     }
-
+    
+    public void GainFatigue(int perSecondValue, float maxValue)
+    {
+        if (_fatigue + (perSecondValue * Time.deltaTime) <= maxValue)
+        {
+            _fatigue += perSecondValue * Time.deltaTime;
+        }
+        else
+        {
+            _fatigue = maxValue;
+        }
+    }
+    
     public Pet(string name)
     {
         _name = name;
