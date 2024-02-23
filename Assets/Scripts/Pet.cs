@@ -6,6 +6,8 @@
 //Date: 02/26/2024
 /////////////////////////////////////////////
 
+// All values based on my own experience owning a puppy lol
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

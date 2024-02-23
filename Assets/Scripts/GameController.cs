@@ -6,6 +6,8 @@
 //Date: 02/26/2024
 /////////////////////////////////////////////
 
+// All values based on my own experience owning a puppy lol
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,8 +46,8 @@ public class GameController : MonoBehaviour
     private void SetMaxBarValues()
     {
         MaxHungerValue = _hungerBarSlider.maxValue;
-        MaxBoredomValue = _hungerBarSlider.maxValue;
-        MaxFatigueValue = _hungerBarSlider.maxValue;
+        MaxBoredomValue = _boredomBarSlider.maxValue;
+        MaxFatigueValue = _fatigueBarSlider.maxValue;
     }
     
     private void UpdateButtonState()
