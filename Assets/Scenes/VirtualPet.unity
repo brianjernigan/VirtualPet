@@ -1239,7 +1239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 993335979}
   m_Layer: 5
-  m_Name: Naming
+  m_Name: NamingElements
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2674,10 +2674,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nameInputField: {fileID: 1502461183}
   _adoptButton: {fileID: 1575585264}
-  _namingText: {fileID: 2133809467}
+  _namePetText: {fileID: 2133809467}
   _hungerBarSlider: {fileID: 1107649684}
   _boredomBarSlider: {fileID: 1350519930}
   _fatigueBarSlider: {fileID: 493758278}
+  _hungerBarFill: {fileID: 481051909}
+  _boredomBarFill: {fileID: 1750936436}
+  _fatigueBarFill: {fileID: 1490908415}
 --- !u!4 &1738028937
 Transform:
   m_ObjectHideFlags: 0
@@ -3311,7 +3314,7 @@ GameObject:
   - component: {fileID: 2133809470}
   - component: {fileID: 2133809469}
   m_Layer: 5
-  m_Name: NamingText
+  m_Name: NamePetText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

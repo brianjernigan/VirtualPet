@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
 public class Pet
 {
     private string _name;
@@ -46,11 +45,12 @@ public class Pet
         }
     }
     
-    public void IncreaseHunger(int perSecondValue, float maxValue)
+    public void IncreaseHunger(float perSecondValue, float maxValue)
     {
-        if (_hunger + (perSecondValue * Time.deltaTime) <= maxValue)
+        var deltaSecond = perSecondValue * Time.deltaTime;
+        if (_hunger + deltaSecond <= maxValue)
         {
-            _hunger += perSecondValue * Time.deltaTime;
+            _hunger += deltaSecond;
         }
         else
         {
@@ -70,11 +70,12 @@ public class Pet
         }
     }
     
-    public void IncreaseBoredom(int perSecondValue, float maxValue)
+    public void IncreaseBoredom(float perSecondValue, float maxValue)
     {
-        if (_boredom + (perSecondValue * Time.deltaTime) <= maxValue)
+        var deltaSecond = perSecondValue * Time.deltaTime;
+        if (_boredom + deltaSecond <= maxValue)
         {
-            _boredom += perSecondValue * Time.deltaTime;
+            _boredom += deltaSecond;
         }
         else
         {
@@ -94,11 +95,12 @@ public class Pet
         }
     }
     
-    public void IncreaseFatigue(int perSecondValue, float maxValue)
+    public void IncreaseFatigue(float perSecondValue, float maxValue)
     {
-        if (_fatigue + (perSecondValue * Time.deltaTime) <= maxValue)
+        var deltaSecond = perSecondValue * Time.deltaTime;
+        if (_fatigue + deltaSecond <= maxValue)
         {
-            _fatigue += perSecondValue * Time.deltaTime;
+            _fatigue += deltaSecond;
         }
         else
         {
