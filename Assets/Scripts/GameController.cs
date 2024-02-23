@@ -6,8 +6,7 @@
 //Date: 02/26/2024
 /////////////////////////////////////////////
 
-// All values based on my own experience owning a puppy lol
-
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,8 +32,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private Image _fatigueBarFill;
 
     private const float HungerPerSecond = 5f;
-    private const float BoredomPerSecond = 7.5f;
-    private const float FatiguePerSecond = 2.5f;
+    private const float BoredomPerSecond = 6.25f;
+    private const float FatiguePerSecond = 3.75f;
     
     private float MaxHungerValue { get; set; }
     private float MaxBoredomValue { get; set; }
@@ -42,6 +41,7 @@ public class GameController : MonoBehaviour
 
     private Pet _newPet;
     private bool _isAdopted;
+    private bool _isBeingTaken;
 
     private void SetMaxBarValues()
     {
@@ -79,6 +79,15 @@ public class GameController : MonoBehaviour
         if (!_newPet.IsRested)
         {
             _newPet.IncreaseFatigue(FatiguePerSecond, MaxFatigueValue);
+        }
+
+        _isBeingTaken = Math.Abs(_newPet.Hunger - MaxHungerValue) < 0.01f &&
+                        Math.Abs(_newPet.Boredom - MaxBoredomValue) < 0.01f &&
+                        Math.Abs(_newPet.Fatigue - MaxFatigueValue) < 0.01f;
+
+        if (_isBeingTaken)
+        {
+            Debug.Log("you lose");
         }
 
         UpdateStatusBars();
