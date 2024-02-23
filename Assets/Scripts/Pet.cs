@@ -1,3 +1,11 @@
+//////////////////////////////////////////////
+//Assignment/Lab/Project: Virtual Pet
+//Name: Brian Jernigan
+//Section: SGD.213.2172
+//Instructor: Brian Sowers
+//Date: 02/26/2024
+/////////////////////////////////////////////
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,6 +39,24 @@ public class Pet
     {
         get => _fatigue;
         set => _fatigue = value;
+    }
+
+    public bool IsFed
+    {
+        get;
+        set;
+    }
+
+    public bool HasPlayed
+    {
+        get;
+        set;
+    }
+
+    public bool IsRested
+    {
+        get;
+        set;
     }
 
     public void Feed(int cals)
