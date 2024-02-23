@@ -10,10 +10,10 @@ public class GameController : MonoBehaviour
     [SerializeField] private Button _adoptButton;
     [SerializeField] private GameObject _namingText;
 
-    [Header("Bars")] 
-    [SerializeField] private GameObject _hungerBar;
-    [SerializeField] private GameObject _boredomBar;
-    [SerializeField] private GameObject _fatigueBar;
+    [Header("Sliders")] 
+    [SerializeField] private Slider _hungerBarSlider;
+    [SerializeField] private Slider _boredomBarSlider;
+    [SerializeField] private Slider _fatigueBarSlider;
 
     private const int HungerPerSecond = 10;
     private const int BoredomPerSecond = 10;
@@ -27,6 +27,18 @@ public class GameController : MonoBehaviour
 
     private bool _isAdopted;
 
+    private void SetMaxBarValues()
+    {
+        MaxHungerValue = _hungerBarSlider.maxValue;
+        MaxBoredomValue = _hungerBarSlider.maxValue;
+        MaxFatigueValue = _hungerBarSlider.maxValue;
+    }
+    
+    private void UpdateButtonState()
+    {
+        _adoptButton.interactable = !string.IsNullOrEmpty(_nameInputField.text);
+    }
+    
     private void Start()
     {
         SetMaxBarValues();
@@ -37,20 +49,8 @@ public class GameController : MonoBehaviour
     private void Update()
     {
         if (!_isAdopted) return;
-        IncrementPetStatus();
+        IncreasePetStatuses();
         Debug.Log(_newPet);
-    }
-
-    private void SetMaxBarValues()
-    {
-        MaxHungerValue = _hungerBar.GetComponent<Slider>().maxValue;
-        MaxBoredomValue = _boredomBar.GetComponent<Slider>().maxValue;
-        MaxFatigueValue = _fatigueBar.GetComponent<Slider>().maxValue;
-    }
-    
-    private void UpdateButtonState()
-    {
-        _adoptButton.interactable = !string.IsNullOrEmpty(_nameInputField.text);
     }
     
     public void OnClickAdoptButton()
@@ -60,23 +60,22 @@ public class GameController : MonoBehaviour
         _isAdopted = true;
         _nameInputField.interactable = false;
         _namingText.SetActive(false);
-        Debug.Log(_newPet.ToString());
     }
 
-    private void UpdateBars()
+    private void IncreasePetStatuses()
     {
-        _hungerBar.GetComponent<Slider>().value = _newPet.Hunger;
-        _boredomBar.GetComponent<Slider>().value = _newPet.Boredom;
-        _fatigueBar.GetComponent<Slider>().value = _newPet.Fatigue;
+        _newPet.IncreaseHunger(HungerPerSecond, MaxHungerValue);
+        _newPet.IncreaseBoredom(BoredomPerSecond, MaxBoredomValue);
+        _newPet.IncreaseFatigue(FatiguePerSecond, MaxFatigueValue);
+
+        UpdateStatusBars();
     }
-
-    private void IncrementPetStatus()
+    
+    private void UpdateStatusBars()
     {
-        _newPet.GainHunger(HungerPerSecond, MaxHungerValue);
-        _newPet.GainBoredom(BoredomPerSecond, MaxBoredomValue);
-        _newPet.GainFatigue(FatiguePerSecond, MaxFatigueValue);
-
-        UpdateBars();
+        _hungerBarSlider.value = _newPet.Hunger;
+        _boredomBarSlider.value = _newPet.Boredom;
+        _fatigueBarSlider.value = _newPet.Fatigue;
     }
 
     public void OnClickFeedButton()

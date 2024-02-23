@@ -2675,9 +2675,9 @@ MonoBehaviour:
   _nameInputField: {fileID: 1502461183}
   _adoptButton: {fileID: 1575585264}
   _namingText: {fileID: 2133809467}
-  _hungerBar: {fileID: 1107649682}
-  _boredomBar: {fileID: 1350519928}
-  _fatigueBar: {fileID: 493758276}
+  _hungerBarSlider: {fileID: 1107649684}
+  _boredomBarSlider: {fileID: 1350519930}
+  _fatigueBarSlider: {fileID: 493758278}
 --- !u!4 &1738028937
 Transform:
   m_ObjectHideFlags: 0

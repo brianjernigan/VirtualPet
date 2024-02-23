@@ -46,7 +46,7 @@ public class Pet
         }
     }
     
-    public void GainHunger(int perSecondValue, float maxValue)
+    public void IncreaseHunger(int perSecondValue, float maxValue)
     {
         if (_hunger + (perSecondValue * Time.deltaTime) <= maxValue)
         {
@@ -70,7 +70,7 @@ public class Pet
         }
     }
     
-    public void GainBoredom(int perSecondValue, float maxValue)
+    public void IncreaseBoredom(int perSecondValue, float maxValue)
     {
         if (_boredom + (perSecondValue * Time.deltaTime) <= maxValue)
         {
@@ -94,7 +94,7 @@ public class Pet
         }
     }
     
-    public void GainFatigue(int perSecondValue, float maxValue)
+    public void IncreaseFatigue(int perSecondValue, float maxValue)
     {
         if (_fatigue + (perSecondValue * Time.deltaTime) <= maxValue)
         {
