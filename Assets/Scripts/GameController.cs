@@ -38,10 +38,10 @@ public class GameController : MonoBehaviour
     [SerializeField] private Button _feedButton;
     [SerializeField] private Button _playButton;
     [SerializeField] private Button _restButton;
-
-    private const float HungerPerSecond = 5f;
-    private const float BoredomPerSecond = 6.25f;
-    private const float FatiguePerSecond = 3.75f;
+    
+    private const float HungerPerSecond = 6.25f;
+    private const float BoredomPerSecond = 7.5f;
+    private const float FatiguePerSecond = 5f;
     
     private float MaxHungerValue { get; set; }
     private float MaxBoredomValue { get; set; }
@@ -51,6 +51,7 @@ public class GameController : MonoBehaviour
     private bool _isAdopted;
     
     // Max values are set by slider components in inspector
+    // Called in Start
     private void SetMaxBarValues()
     {
         MaxHungerValue = _hungerBarSlider.maxValue;
@@ -58,7 +59,7 @@ public class GameController : MonoBehaviour
         MaxFatigueValue = _fatigueBarSlider.maxValue;
     }
     
-    private void UpdateButtonState()
+    private void UpdateAdoptButtonState()
     {
         _adoptButton.interactable = !string.IsNullOrEmpty(_nameInputField.text);
     }
@@ -66,9 +67,9 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         SetMaxBarValues();
-        UpdateButtonState();
+        UpdateAdoptButtonState();
         // Enables button when something is entered into the input field
-        _nameInputField.onValueChanged.AddListener(delegate {UpdateButtonState();} );
+        _nameInputField.onValueChanged.AddListener(delegate {UpdateAdoptButtonState();});
     }
 
     private void Update()
@@ -76,9 +77,8 @@ public class GameController : MonoBehaviour
         if (!_isAdopted) return;
         
         UpdatePetNeeds();
-        UpdateActionButtons();
+        UpdateActionButtonsStates();
         UpdateStatusBars();
-        
         
         if (CheckForLoss())
         {
@@ -105,7 +105,7 @@ public class GameController : MonoBehaviour
     }
 
     // Disables individual action buttons when status reaches max
-    private void UpdateActionButtons()
+    private void UpdateActionButtonsStates()
     {
         _feedButton.interactable = !StatusHasReachedMax(_newPet.Hunger, MaxHungerValue);
         _playButton.interactable = !StatusHasReachedMax(_newPet.Boredom, MaxBoredomValue);
@@ -162,22 +162,30 @@ public class GameController : MonoBehaviour
     
     public void OnClickAdoptButton()
     {
+        AdoptPet();
+        DisablePregameUIElements();
+        EnableActionButtons();
+    }
+
+    private void AdoptPet()
+    {
         var petName = _nameInputField.text;
         _newPet = new Pet(petName);
-        OnAdoption();
-    }
-
-    public void OnClickPlayAgainButton()
-    {
-        SceneManager.LoadScene("VirtualPet");
-    }
-
-    private void OnAdoption()
-    {
         _isAdopted = true;
+    }
+
+    private void DisablePregameUIElements()
+    {
         _nameInputField.interactable = false;
         _adoptButton.interactable = false;
         _namePetText.SetActive(false);
+    }
+    
+    private void EnableActionButtons()
+    {
+        _feedButton.gameObject.SetActive(true);
+        _playButton.gameObject.SetActive(true);
+        _restButton.gameObject.SetActive(true);
     }
     
     public void OnClickFeedButton()
@@ -205,5 +213,15 @@ public class GameController : MonoBehaviour
         setStatus(true);
         yield return new WaitForSeconds(delay);
         setStatus(false);
+    }
+    
+    public void OnClickPlayAgainButton()
+    {
+        SceneManager.LoadScene("VirtualPet");
+    }
+
+    public void OnClickQuitButton()
+    {
+        Application.Quit();
     }
 }
