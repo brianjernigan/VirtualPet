@@ -49,7 +49,7 @@ public class GameController : MonoBehaviour
     private Pet _newPet;
     private bool _isAdopted;
     
-    // Max values are set by slider component in inspector
+    // Max values are set by slider components in inspector
     private void SetMaxBarValues()
     {
         MaxHungerValue = _hungerBarSlider.maxValue;
@@ -66,6 +66,7 @@ public class GameController : MonoBehaviour
     {
         SetMaxBarValues();
         UpdateButtonState();
+        // Enables button when something is entered into the input field
         _nameInputField.onValueChanged.AddListener(delegate {UpdateButtonState();} );
     }
 
@@ -104,6 +105,7 @@ public class GameController : MonoBehaviour
         }
     }
 
+    // Disables individual action buttons when status reaches max
     private void UpdateActionButtons()
     {
         _feedButton.interactable = !StatusHasReachedMax(_newPet.Hunger, MaxHungerValue);
@@ -113,8 +115,10 @@ public class GameController : MonoBehaviour
 
     private bool StatusHasReachedMax(float currentValue, float maxValue)
     {
-        return Math.Abs(currentValue - maxValue) < 0.01f;
+        return Math.Abs(currentValue - maxValue) < Mathf.Epsilon;
     }
+    
+    // Relates slider value with pet status value
     private void UpdateStatusBars()
     {
         _hungerBarSlider.value = _newPet.Hunger;
@@ -124,6 +128,7 @@ public class GameController : MonoBehaviour
         UpdateAllBarsColors();
     }
 
+    // Changes colors of all bars according to their current values
     private void UpdateAllBarsColors()
     {
         UpdateBarColor(_hungerBarSlider.value, _hungerBarFill);
@@ -140,11 +145,13 @@ public class GameController : MonoBehaviour
             _ => Color.red
         };
     }
+    
+    // Player loses if all 3 statuses have reached their max value
     private bool CheckForLoss()
     {
-        return Math.Abs(_newPet.Hunger - MaxHungerValue) < 0.01f &&
-                   Math.Abs(_newPet.Boredom - MaxBoredomValue) < 0.01f &&
-                   Math.Abs(_newPet.Fatigue - MaxFatigueValue) < 0.01f;
+        return Math.Abs(_newPet.Hunger - MaxHungerValue) < Mathf.Epsilon &&
+                   Math.Abs(_newPet.Boredom - MaxBoredomValue) < Mathf.Epsilon &&
+                   Math.Abs(_newPet.Fatigue - MaxFatigueValue) < Mathf.Epsilon;
     }
     
     public void OnClickAdoptButton()
@@ -166,43 +173,31 @@ public class GameController : MonoBehaviour
         _adoptButton.interactable = false;
         _namePetText.SetActive(false);
     }
+
+    // Delays increase in status value after their corresponding buttons are pressed
+    // Pets aren't satisfied for very long
+    private IEnumerator DelayStatusIncrease(Action<bool> setStatus, float delay)
+    {
+        setStatus(true);
+        yield return new WaitForSeconds(delay);
+        setStatus(false);
+    }
     
     public void OnClickFeedButton()
     {
         _newPet.Feed(25);
-        StartCoroutine(DelayHunger());
-    }
-
-    private IEnumerator DelayHunger()
-    {
-        _newPet.IsFed = true;
-        yield return new WaitForSeconds(2.0f);
-        _newPet.IsFed = false;
+        StartCoroutine(DelayStatusIncrease(status => _newPet.IsFed = status, 2.0f));
     }
 
     public void OnClickPlayButton()
     {
         _newPet.Play(30);
-        StartCoroutine(DelayBoredom());
-    }
-    
-    private IEnumerator DelayBoredom()
-    {
-        _newPet.HasPlayed = true;
-        yield return new WaitForSeconds(1.0f);
-        _newPet.HasPlayed = false;
+        StartCoroutine(DelayStatusIncrease(status => _newPet.HasPlayed = status, 1.0f));
     }
 
     public void OnClickRestButton()
     {
         _newPet.Rest(35);
-        StartCoroutine(DelayFatigue());
-    }
-    
-    private IEnumerator DelayFatigue()
-    {
-        _newPet.IsRested = true;
-        yield return new WaitForSeconds(1.5f);
-        _newPet.IsRested = false;
+        StartCoroutine(DelayStatusIncrease(status => _newPet.IsRested = status, 1.5f));
     }
 }
