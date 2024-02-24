@@ -22,6 +22,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private Button _adoptButton;
     [SerializeField] private Button _playAgainButton;
     [SerializeField] private GameObject _namePetText;
+    [SerializeField] private GameObject _loseText;
 
     [Header("Sliders")] 
     [SerializeField] private Slider _hungerBarSlider;
@@ -81,9 +82,7 @@ public class GameController : MonoBehaviour
         
         if (CheckForLoss())
         {
-            _adoptButton.gameObject.SetActive(false);
-            _playAgainButton.gameObject.SetActive(true);
-            Debug.Log("you lose");
+            OnLoss();
         }
     }
 
@@ -153,6 +152,13 @@ public class GameController : MonoBehaviour
                    Math.Abs(_newPet.Boredom - MaxBoredomValue) < Mathf.Epsilon &&
                    Math.Abs(_newPet.Fatigue - MaxFatigueValue) < Mathf.Epsilon;
     }
+
+    private void OnLoss()
+    {
+        _adoptButton.gameObject.SetActive(false);
+        _playAgainButton.gameObject.SetActive(true);
+        _loseText.SetActive(true);
+    }
     
     public void OnClickAdoptButton()
     {
@@ -173,15 +179,6 @@ public class GameController : MonoBehaviour
         _adoptButton.interactable = false;
         _namePetText.SetActive(false);
     }
-
-    // Delays increase in status value after their corresponding buttons are pressed
-    // Pets aren't satisfied for very long
-    private IEnumerator DelayStatusIncrease(Action<bool> setStatus, float delay)
-    {
-        setStatus(true);
-        yield return new WaitForSeconds(delay);
-        setStatus(false);
-    }
     
     public void OnClickFeedButton()
     {
@@ -199,5 +196,14 @@ public class GameController : MonoBehaviour
     {
         _newPet.Rest(35);
         StartCoroutine(DelayStatusIncrease(status => _newPet.IsRested = status, 1.5f));
+    }
+    
+    // Delays increase in status value after their corresponding buttons are pressed
+    // Pets aren't satisfied for very long
+    private IEnumerator DelayStatusIncrease(Action<bool> setStatus, float delay)
+    {
+        setStatus(true);
+        yield return new WaitForSeconds(delay);
+        setStatus(false);
     }
 }

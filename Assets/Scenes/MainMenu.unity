@@ -525,13 +525,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'In this game, you will create and care for your very own virtual pet.
-    Before the game begins, you will be asked to name your pet. Type your pet''s
-    desired name in the input box and press submit to begin. You will then be able
-    to monitor your pet''s excitement, hunger, and energy levels and you should feed,
-    rest, and play with your pet as you see fit. If you disregard any of these activities,
-    your pet''s state will change in response. And if any of these levels get too
-    high, Animal Services will take your pet away causing you to lose the game. '
+  m_text: In this game, you will create and care for your very own virtual pet. Before
+    the game begins, you will be asked to name your pet. Type your pet's desired
+    name in the input box and press "Adopt" to begin. You will then be able to monitor
+    your pet's hunger, boredom, and fatigue levels, and you should feed, play, and
+    rest with your pet by pressing the corresponding buttons. If a certain status
+    reaches its maximum value, you will no longer be able to perform its respective
+    action, and when all three statuses reach their limits, Animal Services will
+    come for your pet and you will lose the game.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -558,8 +559,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 58
-  m_fontSizeBase: 58
+  m_fontSize: 54
+  m_fontSizeBase: 54
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
