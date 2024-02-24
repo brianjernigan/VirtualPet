@@ -46,92 +46,39 @@ public class Pet
     public bool HasPlayed { get; set; }
     public bool IsRested { get; set; }
 
-    public void Feed(int cals)
-    {
-        if (_hunger - cals >= 0)
-        {
-            _hunger -= cals;
-        }
-        else
-        {
-            _hunger = 0;
-        }
-    }
-    
-    public void IncreaseHunger(float perSecondValue, float maxValue)
-    {
-        var deltaSecond = perSecondValue * Time.deltaTime;
-        if (_hunger + deltaSecond <= maxValue)
-        {
-            _hunger += deltaSecond;
-        }
-        else
-        {
-            _hunger = maxValue;
-        }
-    }
-
-    public void Play(int exercise)
-    {
-        if (_boredom - exercise >= 0)
-        {
-            _boredom -= exercise;
-        }
-        else
-        {
-            _boredom = 0;
-        }
-    }
-    
-    public void IncreaseBoredom(float perSecondValue, float maxValue)
-    {
-        var deltaSecond = perSecondValue * Time.deltaTime;
-        if (_boredom + deltaSecond <= maxValue)
-        {
-            _boredom += deltaSecond;
-        }
-        else
-        {
-            _boredom = maxValue;
-        }
-    }
-
-    public void Rest(int sleep)
-    {
-        if (_fatigue - sleep >= 0)
-        {
-            _fatigue -= sleep;    
-        }
-        else
-        {
-            _fatigue = 0;
-        }
-    }
-    
-    public void IncreaseFatigue(float perSecondValue, float maxValue)
-    {
-        var deltaSecond = perSecondValue * Time.deltaTime;
-        if (_fatigue + deltaSecond <= maxValue)
-        {
-            _fatigue += deltaSecond;
-        }
-        else
-        {
-            _fatigue = maxValue;
-        }
-    }
-    
+    // Constructor
     public Pet(string name)
     {
         _name = name;
-        _hunger = 0;
-        _boredom = 0;
-        _fatigue = 0;
+    }
+    
+    // Abstracted methods for increasing or decreasing stats
+    private void DecreaseStat(ref float stat, float decreaseAmount)
+    {
+        stat = Mathf.Max(0, stat - decreaseAmount);
     }
 
-    // For debugging
-    public override string ToString()
+    private void IncreaseStat(ref float stat, float increaseAmount, float maxValue)
     {
-        return $"Name: {_name}, Hunger: {_hunger}, Boredom: {_boredom}, Fatigue: {_fatigue}";
+        var deltaSecond = increaseAmount * Time.deltaTime;
+        stat = Mathf.Min(maxValue, stat + deltaSecond);
     }
+
+    // Implementation of specific stat methods 
+    // Must pass backing variable by reference
+    public void Feed(int cals) => DecreaseStat(ref _hunger, cals);
+    public void Play(int exercise) => DecreaseStat(ref _boredom, exercise);
+    public void Rest(int sleep) => DecreaseStat(ref _fatigue, sleep);
+
+    public void IncreaseHunger(float perSecondValue, float maxValue) =>
+        IncreaseStat(ref _hunger, perSecondValue, maxValue);
+
+    public void IncreaseBoredom(float perSecondValue, float maxValue) =>
+        IncreaseStat(ref _boredom, perSecondValue, maxValue);
+
+    public void IncreaseFatigue(float perSecondValue, float maxValue) =>
+        IncreaseStat(ref _fatigue, perSecondValue, maxValue);
+
+    // For debugging
+    public override string ToString() => $"Name: {_name}, Hunger: {_hunger}, Boredom: {_boredom}, Fatigue: {_fatigue}";
 }

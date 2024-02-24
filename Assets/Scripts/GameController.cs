@@ -48,7 +48,8 @@ public class GameController : MonoBehaviour
 
     private Pet _newPet;
     private bool _isAdopted;
-
+    
+    // Max values are set by slider component in inspector
     private void SetMaxBarValues()
     {
         MaxHungerValue = _hungerBarSlider.maxValue;
@@ -91,12 +92,12 @@ public class GameController : MonoBehaviour
         {
             _newPet.IncreaseHunger(HungerPerSecond, MaxHungerValue);
         }
-
+        
         if (!_newPet.HasPlayed)
         {
             _newPet.IncreaseBoredom(BoredomPerSecond, MaxBoredomValue);
         }
-
+        
         if (!_newPet.IsRested)
         {
             _newPet.IncreaseFatigue(FatiguePerSecond, MaxFatigueValue);
